@@ -1,0 +1,38 @@
+{
+  "name": "hyperviews",
+  "version": "0.0.1",
+  "description": "View template language based targeting hyperscript",
+  "main": "index.js",
+  "bin": {
+    "hyperviews": "./bin/cmd.js"
+  },
+  "scripts": {
+    "test": "node test",
+    "build": "bin/build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidjamesstone/hyperviews.git"
+  },
+  "keywords": [
+    "hyperapp",
+    "hyperscript",
+    "superviews.js",
+    "template",
+    "DSL",
+    "picodom"
+  ],
+  "author": "davidjamesstone",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/davidjamesstone/hyperviews/issues"
+  },
+  "homepage": "https://github.com/davidjamesstone/hyperviews#readme",
+  "dependencies": {
+    "htmlparser2": "^3.9.2",
+    "standard-format": "^2.2.4"
+  },
+  "devDependencies": {
+    "hyperapp": "^1.0.2"
+  }
+}

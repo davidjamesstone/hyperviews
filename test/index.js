@@ -1,0 +1,6 @@
+require('./basics')
+require('./events')
+require('./conditionals')
+require('./interpolation')
+require('./iteration')
+console.log('All tests passed')

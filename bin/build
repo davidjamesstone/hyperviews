@@ -1,0 +1,5 @@
+#!/bin/bash
+
+echo "const view = (state, actions) =>" | cat - <(cat examples/demo-view.html | bin/cmd.js) > examples/demo-view.js
+
+echo "const view = (state, actions) =>" | cat - <(cat examples/example.html | bin/cmd.js) > examples/example.js
