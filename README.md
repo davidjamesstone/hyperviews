@@ -70,7 +70,7 @@ Reads the template from stdin,
 
 `cat examples/test.html | hyperviews --mode esm --name foo --args bar > examples/test.js`
 
-See [more CLI examples](./test/interpolation.js)
+See [more CLI examples](./test/cli.js)
 
 
 ## Basics
