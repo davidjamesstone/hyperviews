@@ -7,7 +7,7 @@ h('div', {}, [
     if (state.isLoggedIn) {
       return [
         h('a', { href: '/logout' }, 'Logout'),
-        h('ul', {}, (state.posts ? (state.posts.map ? state.posts : Object.keys(state.posts)) : []).map(function ($value, $item, $target) {
+        h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
           const post = $value
           return h('li', { key: (post.slug) }, h('a', { href: '/post/post.id', title: (post.title) }, (post.name)))
         }))

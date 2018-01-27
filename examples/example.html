@@ -1,12 +1,12 @@
 <div>
   <h1>{state.title} by {state.author}</h1>
   <p>Name: {state.name}</p>
-  <button type="button" onclick={actions.click()}></button>
-  <if condition="state.isLoggedIn">
+  <button type=button onclick={actions.click()}></button>
+  <if condition=state.isLoggedIn>
     <a href="/logout">Logout</a>
     <ul>
       <li each="post in state.posts" key={post.slug}>
-        <a href="/post/post.id" title="{post.title}">{post.name}</a>
+        <a href="/post/post.id" title={post.title}>{post.name}</a>
       </li>
     </ul>
   <else>

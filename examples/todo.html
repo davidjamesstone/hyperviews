@@ -1,0 +1,65 @@
+<!doctype html>
+<html>
+<body>
+  <script src="https://unpkg.com/hyperapp"></script>
+  <script src="todo-view.js"></script>
+  <script>
+    const { h, app } = hyperapp
+
+    const state = {
+      input: '',
+      todos: [{
+        id: 1,
+        text: 'Buy milk'
+      }, {
+        id: 2,
+        text: 'Buy coffee'
+      }, {
+        id: 3,
+        text: 'Buy sugar',
+        done: true
+      }]
+    }
+
+    const actions = {
+      add: (e) => state => {
+        e.preventDefault()
+        return {
+          input: '',
+          todos: state.todos.concat({
+            id: Date.now(),
+            text: state.input
+          })
+        }
+      },
+      updateText: (todo) => state => ({
+        todos: state.todos.map(item => {
+          if (item.id === todo.id) {
+            item.text = todo.text
+          }
+          return item
+        })
+      }),
+      toggleDone: (id) => state => ({
+        todos: state.todos.map(item => {
+          if (item.id === id) {
+            item.done = !item.done
+          }
+          return item
+        })
+      }),
+      clearCompleted: () => state => ({
+        todos: state.todos.filter(t => !t.done)
+      }),
+      toggleAll: (value) => state => ({
+        todos: state.todos.map(item => {
+          item.done = value
+          return item
+        })
+      })
+    }
+
+    app(state, actions, view, document.body)
+  </script>
+</body>
+</html>

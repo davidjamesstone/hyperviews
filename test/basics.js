@@ -8,6 +8,14 @@ assert.equal(hv(`
 `)
 
 assert.equal(hv(`
+<div></div>
+<div></div>
+`),
+`h('div', {})
+h('div', {})
+`)
+
+assert.equal(hv(`
 <div id="foo"></div>
 `),
 `h('div', { id: 'foo' })

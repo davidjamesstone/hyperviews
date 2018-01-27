@@ -28,7 +28,8 @@ function interpolate (text) {
 }
 
 function getIterator (target) {
-  return `(${target} ? (${target}.map ? ${target} : Object.keys(${target})) : [])`
+  // return `(${target} ? (${target}.map ? ${target} : Object.keys(${target})) : [])`
+  return `(${target} || [])`
 }
 
 function getAttrs (target) {
@@ -105,8 +106,8 @@ class Node {
 
   childrenToString (filterSpecial) {
     const children = (filterSpecial
-        ? this.children.filter(c => !c.isSpecial)
-        : this.children).map(c => c.toString())
+      ? this.children.filter(c => !c.isSpecial)
+      : this.children).map(c => c.toString())
 
     let childstr = ''
     if (children.length) {
@@ -152,7 +153,7 @@ class Node {
       const key = eachParts[0]
       const target = eachParts[1]
 
-      return `${getIterator(target)}.map(function($value, $item, $target) {\nconst ${key} = $value\nreturn ${node}\n})`
+      return `${getIterator(target)}.map(function ($value, $index, $target) {\nvar ${key} = $value\nreturn ${node}\n})`
     } else {
       return node
     }
@@ -160,8 +161,25 @@ class Node {
 }
 
 class Root extends Node {
+  get template () {
+    const children = this.children
+    if (children.length === 1) {
+      const onlyChild = children[0]
+      if (onlyChild.name === 'template' &&
+        (onlyChild.attribs['name'] || onlyChild.attribs['args'])) {
+        return onlyChild
+      }
+    }
+  }
+
+  get hasTemplate () {
+    return !!this.template()
+  }
+
   toString () {
-    return this.children.map(c => c.toString()).join('/n')
+    const template = this.template
+
+    return (template || this).children.map(c => c.toString()).join('\n').trim()
   }
 }
 
@@ -193,7 +211,7 @@ const handler = {
   }
 }
 
-module.exports = function (tmplstr) {
+module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state actions') {
   root = new Root()
   buffer = [root]
   curr = root
@@ -204,14 +222,52 @@ module.exports = function (tmplstr) {
     lowerCaseTags: false
   })
 
-  parser.write(tmplstr)
+  parser.write(tmpl)
   parser.end()
 
-  const js = root.toString().trim()
+  let result = ''
+  const js = root.toString()
+  const template = root.template
   // console.log(js)
 
-  const standardized = standardize.transform(js)
-  // console.log(standardized)
+  if (template) {
+    name = template.attribs['name'] || name
+    args = template.attribs['args'] || args
+  }
 
-  return standardized
+  try {
+    if (mode === 'raw') {
+      result = js
+    } else {
+      let argstr = args.split(' ').filter(item => {
+        return item.trim()
+      }).join(', ')
+
+      switch (mode) {
+        case 'esm':
+          result = `export default function ${name} (${argstr}) {
+            ${js}
+          }`
+          break
+        case 'cjs':
+          result = `module.exports = function ${name} (${argstr}) {
+            ${js}
+          }`
+          break
+        case 'browser':
+          result = `window.${name} = function (${argstr}) {
+            ${js}
+          }`
+          break
+        default:
+          result = `${mode ? `var ${mode} =` : ''} function (${argstr}) {
+            ${js}
+          }`
+      }
+    }
+
+    return standardize.transform(result)
+  } catch (err) {
+    throw new Error(`Error ${err.message}\n${result}\nraw:\n${js}`)
+  }
 }

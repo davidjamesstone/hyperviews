@@ -1,0 +1,32 @@
+<section>
+  <!-- Add new todo and toggle all -->
+  <form onsubmit={actions.add(e)}>
+    <input type=text name=text class=form-control
+      placeholder="Enter new todo" value={state.input}
+      required=required autocomplete=off
+      onchange="{state.input = this.value.trim()}">
+    <input type=checkbox onchange={actions.toggleAll(this.checked)}>
+  </form>
+
+  <!-- Todos list -->
+  <ul>
+    <li each="todo in state.todos" key={todo.id}>
+      {$index + 1}.
+      <input type=text value={todo.text}
+        onchange="{actions.updateText({id: todo.id, text: this.value})}" class=form-control
+        style="{ borderColor: todo.text ? '': 'red', textDecoration: todo.done ? 'line-through': '' }">
+      <input type=checkbox checked={todo.done}
+        onchange={actions.toggleDone(todo.id)}>
+    </li>
+  </ul>
+
+  <!-- Summary -->
+  <span>Total {state.todos.length}</span>
+  <button if="state.todos.find(t => t.done)" 
+    onclick={actions.clearCompleted()}>
+    Clear completed
+  </button>
+
+  <!-- Debug -->
+  <pre><code>{JSON.stringify(state, null, 2)}</code></pre>
+</section>
