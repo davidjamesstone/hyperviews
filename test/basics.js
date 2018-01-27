@@ -64,3 +64,9 @@ assert.equal(hv(`
 `),
 `h('p', { style: { color: '#ddd', fontSize: '12px' } })
 `)
+
+assert.equal(hv(`
+<p style="{ color: state.color, fontSize: '12px' }"></p>
+`),
+`h('p', { style: { color: state.color, fontSize: '12px' } })
+`)

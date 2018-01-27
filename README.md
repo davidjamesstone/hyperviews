@@ -34,7 +34,7 @@ h('div', {}, [
       return [
         h('a', { href: '/logout' }, 'Logout'),
         h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
-          const post = $value
+          var post = $value
           return h('li', { key: (post.slug) }, h('a', { href: '/post/post.id', title: (post.title) }, (post.name)))
         }))
       ]
@@ -174,18 +174,14 @@ See [more event examples](./test/events.js)
 The `style` attribute expects an object
 
 ```html
-<p style="{ color: '#ddd', fontSize: '12px' }"></p>
+<p style="{ color: state.color, fontSize: '12px' }"></p>
 ```
 
 produces this output
 
 ```js
-h('p', { style: { color: '#ddd', fontSize: '12px' } })
+h('p', { style: { color: state.color, fontSize: '12px' } })
 ```
-
-
-
-Based on superviews.js, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
 
 
 
@@ -288,3 +284,8 @@ Todo list
 ```
 
 Download the repo and open [the todo example](./examples/todo.html) to see it work.
+
+
+
+
+`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 

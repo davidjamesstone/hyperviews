@@ -5,7 +5,7 @@ h('section', {}, [
     h('input', { type: 'checkbox', onchange: function (e) { actions.toggleAll(this.checked) } })
   ]),
   h('ul', {}, (state.todos || []).map(function ($value, $index, $target) {
-    const todo = $value
+    var todo = $value
     return h('li', { key: (todo.id) }, [
       ($index + 1) + '.',
       h('input', { type: 'text', value: (todo.text), onchange: function (e) { actions.updateText({id: todo.id, text: this.value}) }, class: 'form-control', style: { borderColor: todo.text ? '' : 'red', textDecoration: todo.done ? 'line-through' : '' } }),
@@ -16,7 +16,3 @@ h('section', {}, [
   state.todos.find(t => t.done) ? h('button', { onclick: function (e) { actions.clearCompleted() } }, 'Clear completed') : undefined,
   h('pre', {}, h('code', {}, (JSON.stringify(state, null, 2))))
 ])
-
-function view (state, actions) {
-
-}

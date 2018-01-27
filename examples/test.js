@@ -1,2 +1,2 @@
+const view = (state, actions) =>
 h('span', {}, 'A')
-h('span', {}, 'B')

@@ -8,7 +8,7 @@ h('div', {}, [
       return [
         h('a', { href: '/logout' }, 'Logout'),
         h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
-          const post = $value
+          var post = $value
           return h('li', { key: (post.slug) }, h('a', { href: '/post/post.id', title: (post.title) }, (post.name)))
         }))
       ]
