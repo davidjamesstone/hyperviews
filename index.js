@@ -246,22 +246,22 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state acti
       switch (mode) {
         case 'esm':
           result = `export default function ${name} (${argstr}) {
-            ${js}
+            return ${js}
           }`
           break
         case 'cjs':
           result = `module.exports = function ${name} (${argstr}) {
-            ${js}
+            return ${js}
           }`
           break
         case 'browser':
           result = `window.${name} = function (${argstr}) {
-            ${js}
+            return ${js}
           }`
           break
         default:
-          result = `${mode ? `var ${mode} =` : ''} function (${argstr}) {
-            ${js}
+          result = `${mode ? `var ${mode} =` : ''} function ${name} (${argstr}) {
+            return ${js}
           }`
       }
     }

@@ -1,2 +1,3 @@
-const view = (state, actions) =>
-h('span', {}, 'A')
+window.a = function (b, c, d) {
+  return h('span', {}, 'A')
+}

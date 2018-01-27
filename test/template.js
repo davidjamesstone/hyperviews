@@ -7,6 +7,6 @@ assert.equal(hv(`
 </template>
 `, 'cjs'),
 `module.exports = function a (b, c, d) {
-  h('span', {}, 'A')
+  return h('span', {}, 'A')
 }
 `)

@@ -5,7 +5,7 @@ assert.equal(hv(`
 <div></div>
 `, 'esm'),
 `export default function view (state, actions) {
-  h('div', {})
+  return h('div', {})
 }
 `)
 
@@ -13,7 +13,7 @@ assert.equal(hv(`
 <div></div>
 `, 'cjs'),
 `module.exports = function view (state, actions) {
-  h('div', {})
+  return h('div', {})
 }
 `)
 
@@ -21,15 +21,15 @@ assert.equal(hv(`
 <div></div>
 `, 'browser'),
 `window.view = function (state, actions) {
-  h('div', {})
+  return h('div', {})
 }
 `)
 
 assert.equal(hv(`
 <div></div>
 `, 'customVar'),
-`var customVar = function (state, actions) {
-  h('div', {})
+`var customVar = function view (state, actions) {
+  return h('div', {})
 }
 `)
 
@@ -43,6 +43,6 @@ assert.equal(hv(`
 <div></div>
 `, 'cjs', 'customFnName', 'c u s t o m'),
 `module.exports = function customFnName (c, u, s, t, o, m) {
-  h('div', {})
+  return h('div', {})
 }
 `)
