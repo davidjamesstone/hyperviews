@@ -57,10 +57,10 @@ h('div', {}, [
 
 `hyperviews(tmpl, mode, name, argstr)`
 
-`tmpl` (required) - The template string.  
-`mode` - The output format. Can be one of [`raw`, `esm`, `cjs`, `browser`], if any other value is passed the function is exported as a variable with that name. The default is `raw`.
-`name` - The output function name (can be overridden with a `<template>` element). The default is `view`.
-`args` - The output function arguments (can be overridden with a `<template>` element). The default is `state actions`.
+- `tmpl` (required) - The template string.  
+- `mode` - The output format. Can be one of [`raw`, `esm`, `cjs`, `browser`], if any other value is passed the function is exported as a variable with that name. The default is `raw`.
+- `name` - The output function name (can be overridden with a `<template>` element). The default is `view`.
+- `args` - The output function arguments (can be overridden with a `<template>` element). The default is `state actions`.
 
 
 
