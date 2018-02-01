@@ -1,8 +1,60 @@
 # hyperviews
 
-View template language that targets hyperscript.
+In the browser, `hyperviews` is a tiny (3KB) Web Components Custom Elements library based on `hyperapp`.
 
-Turns this template
+`hyperviews` is also a template language that transforms to hyperscript `h(tagName, attrs, children)`.
+
+## Web Components
+
+Define Custom Elements that:
+
+- work in all evergreen browsers and IE10.
+- are based on [hyperapp](https://github.com/hyperapp/hyperapp) so you get
+  - a beautifully simple API
+  - a functional paradigm
+  - immutable state data
+  - Virtual DOM updates
+- A solid migration path to Custom Elements V1
+
+```js
+const hyperviews = require('hyperviews/component')
+
+const MyElement = hyperviews({
+  name: 'my-element',
+  state: {
+    counter: 0
+  },
+  actions: {
+    down: () => state => ({ counter: state.counter - 1 }),
+    up: () => state => ({ counter: state.counter + 1 })
+  }, 
+  view: require('./view'), // `view` can be any `h()` returning function including JSX or a transformed hyperviews templates
+  constructor () {},
+  attributeChangedCallback (name, oldValue, newValue) {},
+  connectedCallback () {},
+  disconnectedCallback () {},
+  static: {
+    observedAttributes: [], // List of observed attribute names
+    events: [] // List of events this element can fire. Optional.
+    //...any more static properties/methods
+  }
+  //...any other properties/methods are added to the prototype
+})
+```
+
+```html
+<my-element></my-element>
+```
+
+You may notice that the API looks like Custom Elements V1, however the decision was taken to 
+initially [target Custom Elements V0](https://github.com/WebReflection/ce-v0) but with a V1 flavour so, when V1 is widely supported, the upgrade will be simple. See [this article](https://medium.com/@WebReflection/a-custom-elements-v0-grampafill-dc1319420e9b) for more information. Huge thanks to [Andrea Giammarchi](https://github.com/WebReflection) for all his work in this area.
+
+
+## Template Language
+
+In addition to defining Custom Elements for the browser, `hyperviews` is a template language that targets hyperscript.
+
+It turns this template:
 
 ```html
 <div>
@@ -47,13 +99,13 @@ h('div', {}, [
 
 
 
-## Installation
+### Installation
 
 `npm i hyperviews`
 
 
 
-## API
+### API
 
 `hyperviews(tmpl, mode, name, argstr)`
 
@@ -64,7 +116,7 @@ h('div', {}, [
 
 
 
-## CLI
+### CLI
 
 Reads the template from stdin, 
 
@@ -73,7 +125,7 @@ Reads the template from stdin,
 See [more CLI examples](./test/cli.js)
 
 
-## Basics
+### Basics
 ```js
 const hv = require('hyperviews')
 
@@ -83,7 +135,7 @@ hv("<div id='foo'>{state.name}</div>")
 
 
 
-## Interpolation
+### Interpolation
 
 Use curly braces in attributes and text.
 
@@ -98,7 +150,7 @@ See [more interpolation examples](./test/interpolation.js)
 
 
 
-## Conditionals
+### Conditionals
 
 There are two forms of conditional.
 
@@ -128,7 +180,7 @@ See [more conditional examples](./test/conditionals.js)
 
 
 
-## Iteration
+### Iteration
 
 The `each` attribute can be used to repeat over items in an Array.
 Three additional variables are available during each iteration: `$value`, `$index` and `$target`.
@@ -154,7 +206,7 @@ h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
 
 See [more iteration examples](./test/iteration.js)
 
-## Events
+### Events
 
 ```html
 <a href="http://example.com" onclick={actions.do()}>{state.foo}</a>
@@ -169,7 +221,7 @@ h('a', { href: 'http://example.com', onclick: function (e) { actions.do() } }, (
 
 See [more event examples](./test/events.js)
 
-## Style
+### Style
 
 The `style` attribute expects an object
 

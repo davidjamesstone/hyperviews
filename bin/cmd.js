@@ -19,7 +19,3 @@ stdin.on('end', () => {
 })
 
 stdin.resume()
-
-// echo "const view = (state, actions) =>" | cat - <(cat examples/demo-view.html | bin/cmd.js) > examples/demo-view.js
-
-// echo "my standard in" | cat <(echo "prefix... ") <(cat -) <(echo " ...suffix")

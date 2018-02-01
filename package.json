@@ -1,6 +1,6 @@
 {
   "name": "hyperviews",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "View template language based targeting hyperscript",
   "main": "index.js",
   "bin": {
@@ -8,7 +8,8 @@
   },
   "scripts": {
     "test": "standard && node test",
-    "build": "bin/build"
+    "build": "bin/build",
+    "build:app": "bin/build-app"
   },
   "repository": {
     "type": "git",
@@ -29,11 +30,13 @@
   },
   "homepage": "https://github.com/davidjamesstone/hyperviews#readme",
   "dependencies": {
+    "ce-v0": "^0.2.1",
     "htmlparser2": "^3.9.2",
     "minimist": "^1.2.0",
     "standard-format": "^2.2.4"
   },
   "devDependencies": {
+    "browserify": "^15.2.0",
     "hyperapp": "^1.0.2",
     "standard": "^10.0.3"
   },
