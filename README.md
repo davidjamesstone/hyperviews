@@ -4,7 +4,7 @@ In the browser, `hyperviews` is a tiny (3KB) Web Components Custom Elements libr
 
 `hyperviews` is also a template language that transforms to hyperscript `h(tagName, attrs, children)`.
 
-## Web Components
+## Custom Elements
 
 Define Custom Elements that:
 
@@ -17,7 +17,7 @@ Define Custom Elements that:
 - A solid migration path to Custom Elements V1
 
 ```js
-const hyperviews = require('hyperviews/component')
+const hyperviews = require('hyperviews/element')
 
 const MyElement = hyperviews({
   name: 'my-element',
