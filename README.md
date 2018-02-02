@@ -235,6 +235,45 @@ produces this output
 h('p', { style: { color: state.color, fontSize: '12px' } })
 ```
 
+### Literal
+
+The `script` tag literally outputs it's contents.
+This is useful for recursive nodes, e.g. a tree
+
+```html
+<if condition=state.children>
+  <div>
+    <a href="#{state.path}">{state.name}</a>
+    <ul>
+      <li each="child in state.children">
+        <script>view(child, actions)</script>
+      </li>
+    </ul>
+  </div>
+<else>
+  <a href="#{state.path}">{state.name}</a>
+</if>
+```
+
+produces this output
+
+```js
+function view (state, actions) {
+  return (function () {
+    if (state.children) {
+      return h('div', {}, [
+        h('a', { href: '#' + (state.path) }, (state.name)),
+        h('ul', {}, (state.children || []).map(function ($value, $index, $target) {
+          var child = $value
+          return h('li', {}, view(child, actions))
+        }))
+      ])
+    } else {
+      return h('a', { href: '#' + (state.path) }, (state.name))
+    }
+  })()
+}
+```
 
 
 # Example

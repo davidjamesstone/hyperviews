@@ -126,7 +126,14 @@ class Node {
     // Children
     const childstr = this.childrenToString()
 
-    const node = `h("${this.name}", ${attribs}${childstr ? ', ' + childstr : ''})`
+    let node
+    if (this.name === 'script') {
+      node = this.children.toString()
+    } else {
+      node = `h("${this.name}", ${attribs}${childstr ? ', ' + childstr : ''})`
+    }
+
+    // const node = `h("${this.name}", ${attribs}${childstr ? ', ' + childstr : ''})`
     if (this.name === 'if') {
       const branches = getBranches(this, node)
       let str = ''
@@ -145,6 +152,9 @@ class Node {
       return `(function () {
         ${str}
       })()`
+    // }
+    // else if (this.name === 'script') {
+    //   return this.children.toString()
     } else if ('if' in this.attribs) {
       return `${this.attribs['if']} ? ${node} : undefined`
     } else if ('each' in this.attribs) {
@@ -193,15 +203,18 @@ const handler = {
     curr = newCurr
   },
   ontext: function (text) {
-    if (!text || !text.trim()) {
+    if (!text || !(text = text.trim())) {
       return
     }
 
-    text = text.trim()
-
-    const value = text.indexOf(startDelim) > -1
-      ? interpolate(text)
-      : strify(text)
+    let value
+    if (curr.name === 'script') {
+      value = text
+    } else if (text.indexOf(startDelim) > -1) {
+      value = interpolate(text)
+    } else {
+      value = strify(text)
+    }
 
     curr.children.push(value)
   },
