@@ -10,7 +10,7 @@ function hyperviews (options) {
 
   var opts = {
     constructor: (typeof ctor === 'function')
-      ? function () { ctor.call(this); this.actions = app(state, actions, view, this) }
+      ? function () { this.actions = app(state, actions, view, this); ctor.call(this) }
       : function () { this.actions = app(state, actions, view, this) }
   }
 
@@ -27,7 +27,7 @@ function hyperviews (options) {
           return
         }
 
-        attributeChangedCallback(name, oldValue, newValue)
+        attributeChangedCallback.call(this, name, oldValue, newValue)
       }
     } else {
       onattribute = undefined
