@@ -9,7 +9,8 @@
   "scripts": {
     "test": "standard && node test",
     "build": "bin/build",
-    "build:app": "bin/build-app"
+    "build:app": "bin/build-app",
+    "build:playground": "bin/build-playground"
   },
   "repository": {
     "type": "git",
@@ -39,6 +40,7 @@
     "hyperapp": "^1.0.2"
   },
   "devDependencies": {
+    "brace": "^0.11.0",
     "browserify": "^15.2.0",
     "standard": "^10.0.3"
   },
@@ -47,5 +49,8 @@
       "examples",
       "element.js"
     ]
+  },
+  "browser": {
+    "standard-format": "./docs/sf.js"
   }
 }

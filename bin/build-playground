@@ -1,0 +1,3 @@
+#!/bin/bash
+
+browserify docs/playground.js > docs/playground.bundle.js

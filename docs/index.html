@@ -1,0 +1,37 @@
+<script src="https://unpkg.com/hyperapp"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-beautify/1.7.5/beautify.js"></script>
+<script>
+  const { h, app } = hyperapp
+</script>
+
+<style>
+  body { background-color: #ddd; }
+  #template { position: absolute; top: 0; right: 50%; bottom: 50%; left: 0; }
+  #app { position: absolute; top: 0; right: 0; bottom: 50%; left: 50%; }
+  #transformed { position: absolute; top: 50%; right: 50%; bottom: 0; left: 0; }
+  #result { position: absolute; top: 50%; right: 0; bottom: 0; left: 50%; overflow: auto; background-color: #fff; }
+  #transform { position: absolute; right: 50%; padding: 8px; bottom: 50%; z-index: 1000; color: white; background-color: green; border: none; }
+  #run { position: absolute; padding: 8px; bottom: 50%; right: 0; z-index: 1000; color: white; background-color: orange; border: none; }
+  #recipies { position: absolute; top: 4px; right: 50%; z-index: 1001; }
+</style>
+<select id="recipies">
+  <option value="demo">Demo</option>
+  <option value="todo">Todo</option>
+</select>
+<div id="template"></div>
+<div id="app">const state = {
+  count: 0
+}
+
+const actions = {
+  down: () => state => ({ count: state.count - 1 }),
+  up: () => state => ({ count: state.count + 1 })
+}
+
+app(state, actions, view, resultEl)
+</div>
+<button id="transform">Transform &darr;</button>
+<button id="run" style="display: none;">Run &darr;</button>
+<pre><code id="transformed"></code></pre>
+<div id="result"></div>
+<script src="./playground.bundle.js"></script>
