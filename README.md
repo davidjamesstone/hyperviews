@@ -1,6 +1,6 @@
 # hyperviews
 
-In the browser, `hyperviews` is a tiny (3KB) Web Components [Custom Elements library](custom-elements) based on `hyperapp`.
+In the browser, `hyperviews` is a tiny (3KB) Web Components [Custom Elements library](#custom-elements) based on `hyperapp`.
 
 `hyperviews` is also a [template language](#template-language) that transforms to hyperscript `h(tagName, attrs, children)`.
 
@@ -9,7 +9,7 @@ You can choose to use both together or individually. There's no dependencies bet
 ### NEW! Try out the template language [live in your browser](https://davidjamesstone.github.io/hyperviews/)
 
 
-## [Template Language]
+## Template Language
 
 In addition to defining Custom Elements for the browser, `hyperviews` is a template language that targets hyperscript.
 
