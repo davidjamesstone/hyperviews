@@ -63,6 +63,13 @@ h('div', {}, [
 `npm i hyperviews`
 
 
+Using `browserify`?
+Then install the `hyperviewify` transform so you can simply require templates.
+
+`const view = require('./my-view.html')`
+
+`npm i hyperviewify`
+
 
 ### API
 
