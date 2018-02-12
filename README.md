@@ -33,11 +33,7 @@ const MyElement = hyperviews({
   attributeChangedCallback (name, oldValue, newValue) {},
   connectedCallback () {},
   disconnectedCallback () {},
-  static: {
-    observedAttributes: [], // List of observed attribute names
-    events: [] // List of events this element can fire. Optional.
-    //...any more static properties/methods
-  }
+  observedAttributes: [], // List of observed attribute names. Optional.
   //...any other properties/methods are added to the prototype
 })
 ```

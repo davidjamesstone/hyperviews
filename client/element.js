@@ -19,10 +19,10 @@ function hyperviews (options) {
   var attributeChangedCallback = options.attributeChangedCallback
   if (attributeChangedCallback) {
     if (options.static && Array.isArray(options.static.observedAttributes)) {
-      var observedAttributes = options.static.observedAttributes
+      var observedAttributes = options.observedAttributes
 
       onattribute = function (name, oldValue, newValue) {
-        if (observedAttributes.indexOf(name) < 0) {
+        if (observedAttributes && observedAttributes.indexOf(name) < 0) {
           return
         }
 
