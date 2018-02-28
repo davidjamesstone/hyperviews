@@ -47,6 +47,7 @@
   "standard": {
     "ignore": [
       "examples",
+      "docs/playground.bundle.js",
       "element.js"
     ]
   },

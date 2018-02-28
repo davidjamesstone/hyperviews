@@ -28,7 +28,6 @@ function interpolate (text) {
 }
 
 function getIterator (target) {
-  // return `(${target} ? (${target}.map ? ${target} : Object.keys(${target})) : [])`
   return `(${target} || [])`
 }
 
@@ -180,10 +179,6 @@ class Root extends Node {
         return onlyChild
       }
     }
-  }
-
-  get hasTemplate () {
-    return !!this.template()
   }
 
   toString () {

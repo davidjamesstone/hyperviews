@@ -33,3 +33,15 @@ assert.equal(hv(`
   return view(item, actions)
 }))
 `)
+
+assert.equal(hv(`
+<script>
+const a = 'foo'
+</script>
+<ul>
+  <li></li>
+</ul>
+`),
+`const a = 'foo'
+h('ul', {}, h('li', {}))
+`)
