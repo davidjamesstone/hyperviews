@@ -9,7 +9,6 @@
   "scripts": {
     "test": "standard && node test",
     "build": "bin/build",
-    "build:app": "bin/build-app",
     "build:playground": "bin/build-playground"
   },
   "repository": {

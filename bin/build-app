@@ -1,7 +1,0 @@
-#!/bin/bash
-
-cat examples/app/customelements/main.html | bin/cmd.js --mode cjs | (echo "var h = require('hyperapp').h" && cat) > examples/app/customelements/main.js
-cat examples/app/customelements/sidebar.html | bin/cmd.js --mode cjs | (echo "var h = require('hyperapp').h" && cat) > examples/app/customelements/sidebar.js
-cat examples/app/customelements/footer.html | bin/cmd.js --mode cjs | (echo "var h = require('hyperapp').h" && cat) > examples/app/customelements/footer.js
-cat examples/app/customelements/header.html | bin/cmd.js --mode cjs | (echo "var h = require('hyperapp').h" && cat) > examples/app/customelements/header.js
-browserify examples/app/index.js > examples/app/app.js
