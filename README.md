@@ -6,7 +6,7 @@ In the browser, `hyperviews` is a tiny (3KB) Web Components [Custom Elements lib
 
 You can choose to use both together or individually. There's no dependencies between the Custom Elements clientside lirary and the serverside template language.
 
-### NEW! Try out the template language [live in your browser](https://davidjamesstone.github.io/hyperviews/)
+### NEW! Try out the template language [live in your browser](https://dvstn.github.io/hyperviews/)
 
 
 ## Template Language
@@ -385,4 +385,4 @@ You may notice that the API looks like Custom Elements V1, however the decision 
 initially [target Custom Elements V0](https://github.com/WebReflection/ce-v0) but with a V1 flavour so, when V1 is widely supported, the upgrade will be simple. See [this article](https://medium.com/@WebReflection/a-custom-elements-v0-grampafill-dc1319420e9b) for more information. Huge thanks to [Andrea Giammarchi](https://github.com/WebReflection) for all his work in this area.
 
 
-`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
+`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/dvstn/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
