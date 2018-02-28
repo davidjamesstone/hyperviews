@@ -1,8 +1,4 @@
 #!/bin/bash
 
-# cat examples/demo/demo-view.html | bin/cmd.js --mode browser > examples/demo/demo-view.js
-# cat examples/todo/todo-view.html | bin/cmd.js --mode browser > examples/todo/todo-view.js
-cat examples/component/child-view.html | bin/cmd.js --mode browser > examples/component/child-view.js
-cat examples/component/parent-view.html | bin/cmd.js --mode browser > examples/component/parent-view.js
-
-browserify client/element.js --standalone hyperviews > element.js
+cat examples/demo/demo-view.html | bin/cmd.js --mode browser > examples/demo/demo-view.js
+cat examples/todo/todo-view.html | bin/cmd.js --mode browser > examples/todo/todo-view.js
