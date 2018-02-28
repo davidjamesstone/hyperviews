@@ -2,7 +2,7 @@
 
 `hyperviews` is a [template language](#template-language) that transforms to hyperscript `h(tagName, attrs, children)`.
 
-### NEW! Try out the template language [live in your browser](https://dvstn.github.io/hyperviews/)
+### NEW! Try out the template language [live in your browser](https://davidjamesstone.github.io/hyperviews/)
 
 ## Template Language
 
@@ -335,4 +335,4 @@ Todo list
 
 Download the repo and open [the todo example](./examples/todo.html) to see it work.
 
-`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/dvstn/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
+`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
