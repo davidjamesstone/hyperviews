@@ -31,7 +31,6 @@
   },
   "homepage": "https://github.com/davidjamesstone/hyperviews#readme",
   "dependencies": {
-    "ce-v0": "^0.2.1",
     "htmlparser2": "^3.9.2",
     "minimist": "^1.2.0",
     "standard-format": "^2.2.4"
@@ -47,8 +46,7 @@
   "standard": {
     "ignore": [
       "examples",
-      "docs/playground.bundle.js",
-      "element.js"
+      "docs/playground.bundle.js"
     ]
   },
   "browser": {
