@@ -8,9 +8,9 @@ require('brace/theme/monokai')
 const templateEl = document.getElementById('template')
 const appEl = document.getElementById('app')
 const transformedEl = document.getElementById('transformed')
-const resultEl = document.getElementById('result')
 const transformButton = document.getElementById('transform')
 const runButton = document.getElementById('run')
+let resultEl = document.getElementById('result')
 
 const templateEditor = ace.edit(templateEl)
 templateEditor.getSession().setMode('ace/mode/html')
@@ -47,6 +47,12 @@ function transform () {
 
 function run () {
   try {
+    var newResult = document.createElement('div')
+    newResult.setAttribute('id', 'result')
+
+    resultEl.parentNode.replaceChild(newResult, resultEl)
+    resultEl = newResult
+
     // eslint-disable-next-line
     eval(transformedEditor.getValue())
     // eslint-disable-next-line
