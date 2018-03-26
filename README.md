@@ -333,6 +333,6 @@ Todo list
   app(state, actions, view, document.body)
 ```
 
-Download the repo and open [the todo example](./examples/todo.html) to see it work.
+Download the repo and open [the todo example](https://github.com/davidjamesstone/hyperviews/tree/master/examples/todo/todo.html) to see it work.
 
 `hyperviews` is based on `superviews.js`, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
