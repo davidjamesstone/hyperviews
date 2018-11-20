@@ -1,7 +1,7 @@
 const assert = require('assert')
 const hv = require('..')
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <ul>
   <li each="item in state.items">
     <span>{item}</span>
@@ -9,16 +9,16 @@ assert.equal(hv(`
   </li>
 </ul>
 `),
-`h('ul', {}, (state.items || []).map(function ($value, $index, $target) {
+`h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
-  return h('li', {}, [
-    h('span', {}, (item)),
-    h('span', {}, 'OK')
+  return h('li', null, [
+    h('span', null, (item)),
+    h('span', null, 'OK')
   ])
 }))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <ul>
   <li each="item in state.items" key={item}>
     <span>{item}</span>
@@ -26,16 +26,16 @@ assert.equal(hv(`
   </li>
 </ul>
 `),
-`h('ul', {}, (state.items || []).map(function ($value, $index, $target) {
+`h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
   return h('li', { key: (item) }, [
-    h('span', {}, (item)),
-    h('span', {}, 'OK')
+    h('span', null, (item)),
+    h('span', null, 'OK')
   ])
 }))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <ul>
   <li each="item in state.items.filter(i => i.isPublished)">
     <span>{item}</span>
@@ -43,11 +43,11 @@ assert.equal(hv(`
   </li>
 </ul>
 `),
-`h('ul', {}, (state.items.filter(i => i.isPublished) || []).map(function ($value, $index, $target) {
+`h('ul', null, (state.items.filter(i => i.isPublished) || []).map(function ($value, $index, $target) {
   var item = $value
-  return h('li', {}, [
-    h('span', {}, (item)),
-    h('span', {}, 'OK')
+  return h('li', null, [
+    h('span', null, (item)),
+    h('span', null, 'OK')
   ])
 }))
 `)

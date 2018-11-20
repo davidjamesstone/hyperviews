@@ -1,86 +1,86 @@
 const assert = require('assert')
 const hv = require('..')
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>{state.foo}</div>
 `),
-`h('div', {}, (state.foo))
+`h('div', null, (state.foo))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   {state.bar}
 </div>
 `),
-`h('div', {}, (state.bar))
+`h('div', null, (state.bar))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <span>The value of bar is {state.bar}!</span>
 </div>
 `),
-`h('div', {}, h('span', {}, 'The value of bar is ' + (state.bar) + '!'))
+`h('div', null, h('span', null, 'The value of bar is ' + (state.bar) + '!'))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <span>{state.a}{state.c}</span>
 </div>
 `),
-`h('div', {}, h('span', {}, (state.a) + (state.c)))
+`h('div', null, h('span', null, (state.a) + (state.c)))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <span>{state.a} {state.b} {state.c}</span>
 </div>
 `),
-`h('div', {}, h('span', {}, (state.a) + ' ' + (state.b) + ' ' + (state.c)))
+`h('div', null, h('span', null, (state.a) + ' ' + (state.b) + ' ' + (state.c)))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <span>a is {state.a}, b is {state.b} and c is {state.c}</span>
 </div>
 `),
-`h('div', {}, h('span', {}, 'a is ' + (state.a) + ', b is ' + (state.b) + ' and c is ' + (state.c)))
+`h('div', null, h('span', null, 'a is ' + (state.a) + ', b is ' + (state.b) + ' and c is ' + (state.c)))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div id='id'>{state.firstName} {state.lastName}</div>
 `),
 `h('div', { id: 'id' }, (state.firstName) + ' ' + (state.lastName))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   My name is Elizabeth II.
   I am your Queen.
 </div>
 `),
-`h('div', {}, 'My name is Elizabeth II.\\
+`h('div', null, 'My name is Elizabeth II.\\
   I am your Queen.')
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <a href="http://www.google.co.uk?q={state.query}"></a>
   My name is {state.name} my age is {state.age} and I live at {state.address}
 </div>
 `),
-`h('div', {}, [
+`h('div', null, [
   h('a', { href: 'http://www.google.co.uk?q=' + (state.query) }),
   'My name is ' + (state.name) + ' my age is ' + (state.age) + ' and I live at ' + (state.address)
 ])
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   My name is {state.name} my age is {state.age}.
   I live at {state.address}
 </div>
 `),
-`h('div', {}, 'My name is ' + (state.name) + ' my age is ' + (state.age) + '.\\
+`h('div', null, 'My name is ' + (state.name) + ' my age is ' + (state.age) + '.\\
   I live at ' + (state.address))
 `)

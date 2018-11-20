@@ -4,6 +4,7 @@ const delim = ['{', '}']
 const startDelim = delim[0]
 const specialEls = ['elseif', 'else']
 const specialAttrs = ['if', 'each']
+let root, buffer, curr
 
 function strify (str) {
   str = str
@@ -60,7 +61,7 @@ function getAttrs (target) {
 
   const attribs = attributes.length
     ? `{ ${attributes.map(a => `${a.name}: ${a.value}`).join(', ')} }`
-    : '{}'
+    : null
 
   return attribs
 }
@@ -129,10 +130,21 @@ class Node {
     if (this.name === 'script') {
       node = this.children.toString()
     } else {
-      node = `h("${this.name}", ${attribs}${childstr ? ', ' + childstr : ''})`
+      const isComponent = /^[A-Z]/.test(this.name)
+      const name = isComponent ? this.name : `"${this.name}"`
+      const args = [name]
+
+      if (attribs || childstr) {
+        args.push(attribs || 'null')
+
+        if (childstr) {
+          args.push(childstr)
+        }
+      }
+
+      node = `h(${args.join(', ')})`
     }
 
-    // const node = `h("${this.name}", ${attribs}${childstr ? ', ' + childstr : ''})`
     if (this.name === 'if') {
       const branches = getBranches(this, node)
       let str = ''
@@ -188,8 +200,6 @@ class Root extends Node {
   }
 }
 
-let root, buffer, curr
-
 const handler = {
   onopentag: function (name, attribs) {
     const newCurr = new Node(curr, name, attribs)
@@ -219,7 +229,7 @@ const handler = {
   }
 }
 
-module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state actions') {
+module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'props state') {
   root = new Root()
   buffer = [root]
   curr = root
@@ -227,13 +237,13 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state acti
   const parser = new htmlparser.Parser(handler, {
     decodeEntities: false,
     lowerCaseAttributeNames: false,
-    lowerCaseTags: false
+    lowerCaseTags: false,
+    recognizeSelfClosing: true
   })
 
   parser.write(tmpl)
   parser.end()
 
-  let result = ''
   const js = root.toString()
   const template = root.template
   // console.log(js)
@@ -243,6 +253,7 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state acti
     args = template.attribs['args'] || args
   }
 
+  let result = ''
   try {
     if (mode === 'raw') {
       result = js
@@ -263,7 +274,7 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'state acti
           }`
           break
         case 'browser':
-          result = `window.${name} = function (${argstr}) {
+          result = `window.${name} = function ${name} (${argstr}) {
             return ${js}
           }`
           break

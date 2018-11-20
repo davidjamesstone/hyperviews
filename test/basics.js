@@ -1,71 +1,71 @@
 const assert = require('assert')
 const hv = require('..')
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `),
-`h('div', {})
+`h('div')
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 <div></div>
 `),
-`h('div', {})
-h('div', {})
+`h('div')
+h('div')
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div id="foo"></div>
 `),
 `h('div', { id: 'foo' })
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div id='foo'>{state.name}</div>
 `),
 `h('div', { id: 'foo' }, (state.name))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div class={state.foo} width={state.width}>{state.name}</div>
 `),
 `h('div', { class: (state.foo), width: (state.width) }, (state.name))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div id='id'>{state.firstName + ' ' + state.lastName}</div>
 `),
 `h('div', { id: 'id' }, (state.firstName + ' ' + state.lastName))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <span>text</span>
 </div>
 `),
-`h('div', {}, h('span', {}, 'text'))
+`h('div', null, h('span', null, 'text'))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div>
   <b>x</b>
   <a>y</a>
 </div>
 `),
-`h('div', {}, [
-  h('b', {}, 'x'),
-  h('a', {}, 'y')
+`h('div', null, [
+  h('b', null, 'x'),
+  h('a', null, 'y')
 ])
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <p style="{ color: '#ddd', fontSize: '12px' }"></p>
 `),
 `h('p', { style: { color: '#ddd', fontSize: '12px' } })
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <p style="{ color: state.color, fontSize: '12px' }"></p>
 `),
 `h('p', { style: { color: state.color, fontSize: '12px' } })

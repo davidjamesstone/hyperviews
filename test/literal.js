@@ -1,40 +1,40 @@
 const assert = require('assert')
 const hv = require('..')
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <script>var s
 </script>
 `),
 `var s
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <ul>
   <li each="item in state.items" key={item}>
-    <script>view(state, actions)</script>
+    <script>view(props, state)</script>
   </li>
 </ul>
 `),
-`h('ul', {}, (state.items || []).map(function ($value, $index, $target) {
+`h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
-  return h('li', { key: (item) }, view(state, actions))
+  return h('li', { key: (item) }, view(props, state))
 }))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <ul>
   <script each="item in state.items" key={item}>
     view(item, actions)
   </script>
 </ul>
 `),
-`h('ul', {}, (state.items || []).map(function ($value, $index, $target) {
+`h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
   return view(item, actions)
 }))
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <script>
 const a = 'foo'
 </script>
@@ -43,5 +43,5 @@ const a = 'foo'
 </ul>
 `),
 `const a = 'foo'
-h('ul', {}, h('li', {}))
+h('ul', null, h('li'))
 `)

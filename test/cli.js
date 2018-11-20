@@ -1,48 +1,48 @@
 const assert = require('assert')
 const hv = require('..')
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'esm'),
-`export default function view (state, actions) {
-  return h('div', {})
+`export default function view (props, state) {
+  return h('div')
 }
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'cjs'),
-`module.exports = function view (state, actions) {
-  return h('div', {})
+`module.exports = function view (props, state) {
+  return h('div')
 }
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'browser'),
-`window.view = function (state, actions) {
-  return h('div', {})
+`window.view = function view (props, state) {
+  return h('div')
 }
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'customVar'),
-`var customVar = function view (state, actions) {
-  return h('div', {})
+`var customVar = function view (props, state) {
+  return h('div')
 }
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'raw'),
-`h('div', {})
+`h('div')
 `)
 
-assert.equal(hv(`
+assert.strictEqual(hv(`
 <div></div>
 `, 'cjs', 'customFnName', 'c u s t o m'),
 `module.exports = function customFnName (c, u, s, t, o, m) {
-  return h('div', {})
+  return h('div')
 }
 `)
