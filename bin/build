@@ -1,4 +1,5 @@
 #!/bin/bash
 
-cat examples/demo/demo-view.html | bin/cmd.js --mode browser > examples/demo/demo-view.js
-cat examples/todo/todo-view.html | bin/cmd.js --mode browser > examples/todo/todo-view.js
+cat examples/hyperapp/demo/view.html | bin/cmd.js --mode browser --args "state actions" > examples/hyperapp/demo/view.js
+cat examples/hyperapp/todo/view.html | bin/cmd.js --mode browser --args "state actions" > examples/hyperapp/todo/view.js
+cat examples/preact/demo/view.html | bin/cmd.js --mode browser > examples/preact/demo/view.js

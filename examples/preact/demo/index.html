@@ -1,0 +1,32 @@
+<!doctype html>
+<html>
+<body>
+  <script src="https://unpkg.com/preact@^8"></script>
+  <script src="view.js"></script>
+  <script>
+    const { h, Component } = window.preact
+
+    class UpDown extends Component {
+      constructor (props) {
+        super(props)
+
+        this.state = {
+          count: 0
+        }
+
+        this.render = view
+
+        this.onClickUp = () => {
+          this.setState({ count: this.state.count + 1 })
+        }
+
+        this.onClickDown = (e) => {
+          this.setState({ count: this.state.count - 1 })
+        }
+      }
+    }
+
+    preact.render(h(UpDown), null, document.body)
+  </script>
+</body>
+</html>
