@@ -1,78 +1,28 @@
 # hyperviews
 
-`hyperviews` is a [template language](#template-language) that transforms to hyperscript `h(tagName, attrs, children)`.
+`hyperviews` is a template language that transforms to hyperscript `h(tagName, attrs, children)`.
 
-### NEW! Try out the template language [live in your browser](https://davidjamesstone.github.io/hyperviews/)
-
-## Template Language
-
-Example
-
-```html
-<div>
-  <h1>{state.title} by {state.author}</h1>
-  <p>Name: {state.name}</p>
-  <button type=button onclick={actions.click()}></button>
-  <if condition="state.isLoggedIn">
-    <a href="/logout">Logout</a>
-    <ul>
-      <li each="post in state.posts" key={post.slug}>
-        <a href="/post/post.id" title={post.title}>{post.name}</a>
-      </li>
-    </ul>
-  <else>
-    <a href="/login">Login</a>
-  </if>
-</div>
-```
-
-turns into this JavaScript
+Use it as a build tool with any `h(tag, props, children)` compliant framework e.g. React, preact or hyperapp.
 
 ```js
-h('div', {}, [
-  h('h1', {}, (state.title) + ' by ' + (state.author)),
-  h('p', {}, 'Name: ' + (state.name)),
-  h('button', { type: 'button', onclick: function (e) { actions.click() } }),
-  (function () {
-    if (state.isLoggedIn) {
-      return [
-        h('a', { href: '/logout' }, 'Logout'),
-        h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
-          var post = $value
-          return h('li', { key: (post.slug) }, h('a', { href: '/post/post.id', title: (post.title) }, (post.name)))
-        }))
-      ]
-    } else {
-      return h('a', { href: '/login' }, 'Login')
-    }
-  })()
-])
+const hv = require('hyperviews')
+
+hv("<div id='foo'>{state.name}</div>")
+// => h('div', { id: 'foo' }, (state.name))
 ```
-
-
 
 ### Installation
 
 `npm i hyperviews`
-
-
-Using `browserify`?
-Then install the `hyperviewify` transform so you can simply require templates.
-
-`const view = require('./my-view.html')`
-
-`npm i hyperviewify`
-
 
 ### API
 
 `hyperviews(tmpl, mode, name, argstr)`
 
 - `tmpl` (required) - The template string.  
-- `mode` - The output format. Can be one of [`raw`, `esm`, `cjs`, `browser`], if any other value is passed the function is exported as a variable with that name. The default is `raw`.
-- `name` - The output function name (can be overridden with a `<function>` element). The default is `view`.
-- `args` - The output function arguments (can be overridden with a `<function>` element). The default is `state actions`.
-
+- `mode` - The output format. Can be one of [`raw`, `esm`, `cjs`, `browser`], or if any other value is passed the function is exported as a variable with that name. The default is `raw`.
+- `name` - The default output function name. The default is `view`.
+- `args` - The default function arguments. The default is `props state`.
 
 
 ### CLI
@@ -84,14 +34,8 @@ Reads the template from stdin,
 See [more CLI examples](./test/cli.js)
 
 
-### Basics
-```js
-const hv = require('hyperviews')
 
-hv("<div id='foo'>{state.name}</div>")
-// => h('div', { id: 'foo' }, (state.name))
-```
-
+## Template language
 
 
 ### Interpolation
@@ -100,7 +44,7 @@ Use curly braces in attributes and text.
 
 ```html
 <div>
-  <a class={state.class} href="http://www.google.co.uk?q={state.query}"></a>
+  <a class={state.class} href='http://www.google.co.uk?q={state.query}'></a>
   My name is {state.name} my age is {state.age} and I live at {state.address}
 </div>
 ```
@@ -116,16 +60,16 @@ There are two forms of conditional.
 Using an `if` attribute.
 
 ```html
-<span if="state.bar === 1">Show Me!</span>
+<span if='state.bar === 1'>Show Me!</span>
 ```
 
 Or using tags `<if>`, `<elseif>` and `<else>`
 
 ```html
 <div>
-  <if condition="state.bar === 1">
+  <if condition='state.bar === 1'>
     <span>1</span>
-  <elseif condition="state.bar === 2">
+  <elseif condition='state.bar === 2'>
     <span>2</span>
   <else>
     <span>bar is neither 1 or 2, it's {state.bar}!</span>
@@ -148,7 +92,7 @@ It supports keyed elements as shown here.
 
 ```html
 <ul>
-  <li each="post in state.posts" key={post.id}>
+  <li each='post in state.posts' key={post.id}>
     <span>{post.title} {$index}</span>
   </li>
 </ul>
@@ -160,22 +104,24 @@ produces
 h('ul', {}, (state.posts || []).map(function ($value, $index, $target) {
   const post = $value
   return h('li', { key: (post.id) }, h('span', {}, (post.title) + ' ' + ($index)))
-}))
+}, this))
 ```
 
 See [more iteration examples](./test/iteration.js)
 
+
+
 ### Events
 
 ```html
-<a href="http://example.com" onclick={actions.do()}>{state.foo}</a>
+<a href='http://example.com' onclick=this.onClick>{state.foo}</a>
 ```
 
 produces this output
 
 
 ```js
-h('a', { href: 'http://example.com', onclick: function (e) { actions.do() } }, (state.foo))
+h('a', { href: 'http://example.com', onclick: this.onClick, (state.foo))
 ```
 
 See [more event examples](./test/events.js)
@@ -194,37 +140,47 @@ produces this output
 h('p', { style: { color: state.color, fontSize: '12px' } })
 ```
 
+
+
 ### Literal
 
 The `script` tag literally outputs it's contents.
-This is useful for recursive nodes, e.g. a tree
+
+```html
+<script>
+  import { h, Component } from 'preact'
+  import MyComponent from './component.js'
+</script>
+```
+
+This is also useful for recursive nodes, e.g. a tree
 
 ```html
 <if condition=state.children>
   <div>
-    <a href="#{state.path}">{state.name}</a>
+    <a href='#{state.path}'>{state.name}</a>
     <ul>
-      <li each="child in state.children">
-        <script>view(child, actions)</script>
+      <li each='child in state.children'>
+        <script>view(props, child)</script>
       </li>
     </ul>
   </div>
 <else>
-  <a href="#{state.path}">{state.name}</a>
+  <a href='#{state.path}'>{state.name}</a>
 </if>
 ```
 
 produces this output
 
 ```js
-function view (state, actions) {
+function view (props, state) {
   return (function () {
     if (state.children) {
       return h('div', {}, [
         h('a', { href: '#' + (state.path) }, (state.name)),
         h('ul', {}, (state.children || []).map(function ($value, $index, $target) {
           var child = $value
-          return h('li', {}, view(child, actions))
+          return h('li', {}, view(props, child))
         }))
       ])
     } else {
@@ -234,105 +190,120 @@ function view (state, actions) {
 }
 ```
 
+See [more literal examples](./test/literal.js)
 
-# Example
 
-Todo list
+
+### Function
+
+The `function` tag outputs a function, returning it's contents.
+Supports `name` and `args` attributes.
 
 ```html
-<section>
-  <!-- Add new todo and toggle -->
-  <form onsubmit={actions.add(e)}>
-    <input type=text name=text class=form-control
-      placeholder="Enter new todo" value={state.input}
-      required=required autocomplete=off
-      onchange="{state.input = this.value.trim()}">
-    <input type=checkbox onchange={actions.toggleAll(this.checked)}>
-  </form>
-
-  <!-- Todos list -->
-  <ul>
-    <li each="todo in state.todos" key={todo.id}>
-      {$index + 1}.
-      <input type=text value={todo.text}
-        onchange="{actions.updateText({id: todo.id, text: this.value})}" class=form-control
-        style="{ borderColor: todo.text ? '': 'red', textDecoration: todo.done ? 'line-through': '' }">
-      <input type=checkbox checked={todo.done}
-        onchange={actions.toggleDone(todo.id)}>
-    </li>
-  </ul>
-
-  <!-- Summary -->
-  <span>Total {state.todos.length}</span>
-  <button if="state.todos.find(t => t.done)" 
-    onclick={actions.clearCompleted()}>
-    Clear completed
-  </button>
-
-  <!-- Debug -->
-  <pre><code>{JSON.stringify(state, null, 2)}</code></pre>
-</section>
+<function name='MyComponent' args='x y z'>
+  <div>{x}</div>
+</script>
 ```
+
+produces this output
 
 ```js
-  const { h, app } = hyperapp
-
-  const state = {
-    input: '',
-    todos: [{
-      id: 1,
-      text: 'Buy milk'
-    }, {
-      id: 2,
-      text: 'Buy coffee'
-    }, {
-      id: 3,
-      text: 'Buy sugar',
-      done: true
-    }]
-  }
-
-  const actions = {
-    add: (e) => state => {
-      e.preventDefault()
-      return {
-        input: '',
-        todos: state.todos.concat({
-          id: Date.now(),
-          text: state.input
-        })
-      }
-    },
-    updateText: (todo) => state => ({
-      todos: state.todos.map(item => {
-        if (item.id === todo.id) {
-          item.text = todo.text
-        }
-        return item
-      })
-    }),
-    toggleDone: (id) => state => ({
-      todos: state.todos.map(item => {
-        if (item.id === id) {
-          item.done = !item.done
-        }
-        return item
-      })
-    }),
-    clearCompleted: () => state => ({
-      todos: state.todos.filter(t => !t.done)
-    }),
-    toggleAll: (value) => state => ({
-      todos: state.todos.map(item => {
-        item.done = value
-        return item
-      })
-    })
-  }
-
-  app(state, actions, view, document.body)
+function MyComponent (x, y, z) {
+  return h('div', null, (x))
+}
 ```
 
-Download the repo and open [the todo example](https://github.com/davidjamesstone/hyperviews/tree/master/examples/todo/todo.html) to see it work.
 
-`hyperviews` is based on `superviews.js`, a [similar project](https://github.com/davidjamesstone/superviews.js) for [IncrementalDOM](https://github.com/google/incremental-dom) 
+
+### Components
+
+Components are declared with if the tag starts with a capital letter.
+
+```html
+<div>
+  <MyComponent foo='bar' />
+</div>
+```
+
+produces this output
+
+```js
+h('div', null, h(MyComponent, { foo: 'bar' }))
+```
+
+
+### Module example
+
+How you structure your app is down to you.
+I like to keep js and html in separate files so a component might look like this:
+
+- MyComponent
+  - view.html (The template file e.g. `<div>{state.name}</div>`)
+  - view.html.js (The transformed `h` output of the file above)
+  - index.js (Imports the transformed view and exports the component)
+
+but if you want you could build entire modules in a html file like this:
+
+```html
+<script>
+
+  import { h, Component } from 'preact'
+
+  export default class MyComponent extends Component {
+    constructor (props) {
+      super(props)
+      this.render = view
+
+      this.onSubmit = e => {
+        e.preventDefault()
+        // ...
+      }
+    }
+  }
+
+</script>
+
+<function>
+  <section>
+    <form onsubmit=this.onSubmit>
+      <input type=text name=text value={state.text} />
+      <input type=text name=description value={state.description} />
+    </form>
+  </section>        
+</function>
+```
+
+Compiles to
+
+```js
+import { h, Component } from 'preact'
+
+export default class MyComponent extends Component {
+  constructor (props) {
+    super(props)
+    this.render = view
+
+    this.onSubmit = e => {
+      e.preventDefault()
+    // ...
+    }
+  }
+}
+
+function view (props, state) {
+  return h('section', null, h('form', { onsubmit: this.onSubmit }, [
+    h('input', { type: 'text', name: 'text', value: (state.text) }),
+    h('input', { type: 'text', name: 'description', value: (state.description) })
+  ]))
+}
+```
+
+More examples [here](https://github.com/davidjamesstone/hyperviews/tree/master/examples)
+
+
+Using `browserify`?
+Then install the `hyperviewify` transform so you can simply require templates.
+
+`const view = require('./my-view.html')`
+
+`npm i hyperviewify`
