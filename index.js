@@ -4,7 +4,7 @@ const delim = ['{', '}']
 const startDelim = delim[0]
 const specialEls = ['elseif', 'else']
 const specialAttrs = ['if', 'each']
-let root, buffer, curr
+let root, buffer, curr, defaultFnName, defaultFnArgs
 
 function strify (str) {
   str = str
@@ -39,19 +39,14 @@ function getAttrs (target) {
     if (specialAttrs.indexOf(name) === -1) {
       const value = target.attribs[name]
       let val = ''
-      if (name === 'style') {
+      if (name === 'style' || name.startsWith('on')) {
         val = value
-      } else if (name.startsWith('on')) {
-        if (value.startsWith('{') && value.endsWith('}')) {
-          val = `function (e) { ${value.slice(1, -1)} }`
-        } else {
-          val = value
-        }
       } else if (value.indexOf(startDelim) > -1) {
         val = interpolate(value)
       } else {
         val = strify(value)
       }
+
       attributes.push({
         name: name,
         value: val
@@ -129,6 +124,15 @@ class Node {
     let node
     if (this.name === 'script') {
       node = this.children.toString()
+    } else if (this.name === 'function') {
+      const name = this.attribs.name || defaultFnName
+      const argstr = this.attribs.args
+        ? buildArgs(this.attribs.args)
+        : defaultFnArgs
+
+      node = `
+        ${wrapFn(name, argstr, this.children.toString().trimLeft())}
+      `
     } else {
       const isComponent = /^[A-Z]/.test(this.name)
       const name = isComponent ? this.name : `"${this.name}"`
@@ -162,10 +166,7 @@ class Node {
 
       return `(function () {
         ${str}
-      })()`
-    // }
-    // else if (this.name === 'script') {
-    //   return this.children.toString()
+      }).call(this)`
     } else if ('if' in this.attribs) {
       return `${this.attribs['if']} ? ${node} : undefined`
     } else if ('each' in this.attribs) {
@@ -174,7 +175,7 @@ class Node {
       const key = eachParts[0]
       const target = eachParts[1]
 
-      return `${getIterator(target)}.map(function ($value, $index, $target) {\nvar ${key} = $value\nreturn ${node}\n})`
+      return `${getIterator(target)}.map(function ($value, $index, $target) {\nvar ${key} = $value\nreturn ${node}\n}, this)`
     } else {
       return node
     }
@@ -182,21 +183,18 @@ class Node {
 }
 
 class Root extends Node {
-  get template () {
+  get isSingleFunction () {
     const children = this.children
     if (children.length === 1) {
       const onlyChild = children[0]
-      if (onlyChild.name === 'template' &&
-        (onlyChild.attribs['name'] || onlyChild.attribs['args'])) {
-        return onlyChild
+      if (onlyChild.name === 'function') {
+        return true
       }
     }
   }
 
   toString () {
-    const template = this.template
-
-    return (template || this).children.map(c => c.toString()).join('\n').trim()
+    return this.children.map(c => c.toString()).join('\n').trim()
   }
 }
 
@@ -229,10 +227,25 @@ const handler = {
   }
 }
 
+function buildArgs (args) {
+  return args.split(' ').filter(item => {
+    return item.trim()
+  }).join(', ')
+}
+
+function wrapFn (name, args, value) {
+  return `function ${name} (${args}) {
+    return ${value}
+  }`
+}
+
 module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'props state') {
   root = new Root()
   buffer = [root]
   curr = root
+
+  defaultFnName = name
+  defaultFnArgs = buildArgs(args)
 
   const parser = new htmlparser.Parser(handler, {
     decodeEntities: false,
@@ -245,43 +258,31 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'props stat
   parser.end()
 
   const js = root.toString()
-  const template = root.template
-  // console.log(js)
-
-  if (template) {
-    name = template.attribs['name'] || name
-    args = template.attribs['args'] || args
-  }
 
   let result = ''
   try {
     if (mode === 'raw') {
       result = js
     } else {
-      let argstr = args.split(' ').filter(item => {
-        return item.trim()
-      }).join(', ')
+      let value = js
+      const wrap = !root.isSingleFunction
+
+      if (wrap) {
+        value = wrapFn(defaultFnName, defaultFnArgs, js)
+      }
 
       switch (mode) {
         case 'esm':
-          result = `export default function ${name} (${argstr}) {
-            return ${js}
-          }`
+          result = `export default ${value}`
           break
         case 'cjs':
-          result = `module.exports = function ${name} (${argstr}) {
-            return ${js}
-          }`
+          result = `module.exports = ${value}`
           break
         case 'browser':
-          result = `window.${name} = function ${name} (${argstr}) {
-            return ${js}
-          }`
+          result = `window.${name} = ${value}`
           break
         default:
-          result = `${mode ? `var ${mode} =` : ''} function ${name} (${argstr}) {
-            return ${js}
-          }`
+          result = `${mode ? `var ${mode} =` : ''} ${value}`
       }
     }
 

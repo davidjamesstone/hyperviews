@@ -15,7 +15,7 @@ assert.strictEqual(hv(`
     h('span', null, (item)),
     h('span', null, 'OK')
   ])
-}))
+}, this))
 `)
 
 assert.strictEqual(hv(`
@@ -32,7 +32,7 @@ assert.strictEqual(hv(`
     h('span', null, (item)),
     h('span', null, 'OK')
   ])
-}))
+}, this))
 `)
 
 assert.strictEqual(hv(`
@@ -49,5 +49,5 @@ assert.strictEqual(hv(`
     h('span', null, (item)),
     h('span', null, 'OK')
   ])
-}))
+}, this))
 `)

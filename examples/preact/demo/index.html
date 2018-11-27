@@ -2,11 +2,14 @@
 <html>
 <body>
   <script src="https://unpkg.com/preact@^8"></script>
-  <script src="view.js"></script>
-  <script src="component.js"></script>
-  <script>
+  <!-- <script src="view.js"></script> -->
+  <!-- <script src="component.js"></script> -->
+  <script type="module">
+    import Counter from './view.js'
+
     const { h, Component } = window.preact
 
+    window.h = h
     class UpDown extends Component {
       constructor (props) {
         super(props)
@@ -15,7 +18,7 @@
           count: 0
         }
 
-        this.render = view
+        this.render = Counter
 
         this.onClickUp = () => {
           this.setState({ count: this.state.count + 1 })
@@ -27,7 +30,7 @@
       }
     }
 
-    preact.render(h(UpDown), null, document.body)
+    preact.render(h(Counter), null, document.body)
   </script>
 </body>
 </html>

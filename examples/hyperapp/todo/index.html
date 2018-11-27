@@ -22,7 +22,7 @@
     }
 
     const actions = {
-      add: (e) => state => {
+      add: e => state => {
         e.preventDefault()
         return {
           input: '',
@@ -32,7 +32,10 @@
           })
         }
       },
-      updateText: (todo) => state => ({
+      updateInput: e => state => ({
+        input: e.target.value.trim()
+      }),
+      updateText: todo => state => ({
         todos: state.todos.map(item => {
           if (item.id === todo.id) {
             item.text = todo.text
@@ -40,7 +43,7 @@
           return item
         })
       }),
-      toggleDone: (id) => state => ({
+      toggleDone: id => state => ({
         todos: state.todos.map(item => {
           if (item.id === id) {
             item.done = !item.done
@@ -48,12 +51,12 @@
           return item
         })
       }),
-      clearCompleted: () => state => ({
+      clearCompleted: e => state => ({
         todos: state.todos.filter(t => !t.done)
       }),
-      toggleAll: (value) => state => ({
+      toggleAll: e => state => ({
         todos: state.todos.map(item => {
-          item.done = value
+          item.done = e.target.checked
           return item
         })
       })

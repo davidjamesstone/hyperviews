@@ -18,7 +18,7 @@ assert.strictEqual(hv(`
 `h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
   return h('li', { key: (item) }, view(props, state))
-}))
+}, this))
 `)
 
 assert.strictEqual(hv(`
@@ -31,7 +31,7 @@ assert.strictEqual(hv(`
 `h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
   return view(item, actions)
-}))
+}, this))
 `)
 
 assert.strictEqual(hv(`

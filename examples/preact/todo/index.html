@@ -1,0 +1,11 @@
+<!doctype html>
+<html>
+<body>
+  <script src="https://unpkg.com/preact@^8"></script>
+  <script type="module">
+    import Todos from './todos.js'
+    const { h, Component } = window.preact
+    preact.render(h(Todos), null, document.body)
+  </script>
+</body>
+</html>

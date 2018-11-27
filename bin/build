@@ -2,5 +2,7 @@
 
 cat examples/hyperapp/demo/view.html | bin/cmd.js --mode browser --args "state actions" > examples/hyperapp/demo/view.js
 cat examples/hyperapp/todo/view.html | bin/cmd.js --mode browser --args "state actions" > examples/hyperapp/todo/view.js
-cat examples/preact/demo/view.html | bin/cmd.js --mode browser > examples/preact/demo/view.js
-cat examples/preact/demo/component.html | bin/cmd.js --mode browser > examples/preact/demo/component.js
+
+cat examples/preact/demo/view.html | bin/cmd.js > examples/preact/demo/view.js
+cat examples/preact/demo/component.html | bin/cmd.js --mode esm > examples/preact/demo/component.js
+cat examples/preact/todo/todos.html | bin/cmd.js > examples/preact/todo/todos.js

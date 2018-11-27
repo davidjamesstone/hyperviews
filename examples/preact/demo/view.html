@@ -1,6 +1,38 @@
-<main>
-  <h1>{state.count}</h1>
-  <button onclick=this.onClickDown disabled="{state.count <= 0}">-</button>
-  <button onclick=this.onClickUp>+</button>
-  <MyComponent />
-</main>
+<script>
+
+  import MyComponent from './component.js'
+  const { h, Component } = window.preact
+
+  export default class MyCounter extends Component {
+    constructor (props) {
+      super(props)
+      this.render = view
+
+      this.state = {
+        count: 0
+      }
+
+      this.onClickUp = () => {
+        this.setState({ count: this.state.count + 1 })
+      }
+
+      this.onClickDown = (e) => {
+        this.setState({ count: this.state.count - 1 })
+      }
+    }
+
+    componentDidMount() {
+
+    }
+  }
+
+</script>
+
+<function>
+  <div>
+    <h1>{state.count}</h1>
+    <button onclick=this.onClickDown disabled="{state.count <= 0}">-</button>
+    <button onclick=this.onClickUp>+</button>
+    <MyComponent />
+  </div>
+</function>
