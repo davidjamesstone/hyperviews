@@ -264,25 +264,48 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'props stat
     if (mode === 'raw') {
       result = js
     } else {
+      let wrap = false
+      let useMode = false
+
+      const children = root.children
+      if (children.length === 1) {
+        const onlyChild = children[0]
+
+        // Only wrap the output if there's a single root
+        // child and that child is not a <function> tag
+        if (onlyChild.name !== 'function') {
+          wrap = true
+        }
+
+        // Only mode the output if there's a single
+        // root child and that child is not a <script> tag
+        if (onlyChild.name !== 'script') {
+          useMode = true
+        }
+      }
+
       let value = js
-      const wrap = !root.isSingleFunction
 
       if (wrap) {
         value = wrapFn(defaultFnName, defaultFnArgs, js)
       }
 
-      switch (mode) {
-        case 'esm':
-          result = `export default ${value}`
-          break
-        case 'cjs':
-          result = `module.exports = ${value}`
-          break
-        case 'browser':
-          result = `window.${name} = ${value}`
-          break
-        default:
-          result = `${mode ? `var ${mode} =` : ''} ${value}`
+      if (useMode) {
+        switch (mode) {
+          case 'esm':
+            result = `export default ${value}`
+            break
+          case 'cjs':
+            result = `module.exports = ${value}`
+            break
+          case 'browser':
+            result = `window.${name} = ${value}`
+            break
+          default:
+            result = `${mode ? `var ${mode} =` : ''} ${value}`
+        }
+      } else {
+        result = value
       }
     }
 
