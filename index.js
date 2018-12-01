@@ -55,7 +55,7 @@ function getAttrs (target) {
   }
 
   const attribs = attributes.length
-    ? `{ ${attributes.map(a => `${a.name}: ${a.value}`).join(', ')} }`
+    ? `{ ${attributes.map(a => `'${a.name}': ${a.value}`).join(', ')} }`
     : null
 
   return attribs
