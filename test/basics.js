@@ -18,25 +18,25 @@ h('div')
 assert.strictEqual(hv(`
 <div id="foo"></div>
 `),
-`h('div', { id: 'foo' })
+`h('div', { 'id': 'foo' })
 `)
 
 assert.strictEqual(hv(`
 <div id='foo'>{state.name}</div>
 `),
-`h('div', { id: 'foo' }, (state.name))
+`h('div', { 'id': 'foo' }, (state.name))
 `)
 
 assert.strictEqual(hv(`
 <div class={state.foo} width={state.width}>{state.name}</div>
 `),
-`h('div', { class: (state.foo), width: (state.width) }, (state.name))
+`h('div', { 'class': (state.foo), 'width': (state.width) }, (state.name))
 `)
 
 assert.strictEqual(hv(`
 <div id='id'>{state.firstName + ' ' + state.lastName}</div>
 `),
-`h('div', { id: 'id' }, (state.firstName + ' ' + state.lastName))
+`h('div', { 'id': 'id' }, (state.firstName + ' ' + state.lastName))
 `)
 
 assert.strictEqual(hv(`
@@ -62,11 +62,11 @@ assert.strictEqual(hv(`
 assert.strictEqual(hv(`
 <p style="{ color: '#ddd', fontSize: '12px' }"></p>
 `),
-`h('p', { style: { color: '#ddd', fontSize: '12px' } })
+`h('p', { 'style': { color: '#ddd', fontSize: '12px' } })
 `)
 
 assert.strictEqual(hv(`
 <p style="{ color: state.color, fontSize: '12px' }"></p>
 `),
-`h('p', { style: { color: state.color, fontSize: '12px' } })
+`h('p', { 'style': { color: state.color, fontSize: '12px' } })
 `)

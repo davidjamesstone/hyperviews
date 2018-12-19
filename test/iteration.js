@@ -28,7 +28,7 @@ assert.strictEqual(hv(`
 `),
 `h('ul', null, (state.items || []).map(function ($value, $index, $target) {
   var item = $value
-  return h('li', { key: (item) }, [
+  return h('li', { 'key': (item) }, [
     h('span', null, (item)),
     h('span', null, 'OK')
   ])

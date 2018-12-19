@@ -47,14 +47,16 @@ export default class MyCounter extends Component {
     super()
   }
 
-  componentDidMount () {}
+  componentDidMount () {
+
+  }
 }
 
 function view (props, state) {
   return h('div', null, [
     h('h1', null, (state.count)),
-    h('button', { onclick: this.onClickDown, disabled: (state.count <= 0) }, '-'),
-    h('button', { onclick: this.onClickUp }, '+'),
+    h('button', { 'onclick': this.onClickDown, 'disabled': (state.count <= 0) }, '-'),
+    h('button', { 'onclick': this.onClickUp }, '+'),
     h(MyComponent)
   ])
 }

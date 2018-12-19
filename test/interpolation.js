@@ -50,7 +50,7 @@ assert.strictEqual(hv(`
 assert.strictEqual(hv(`
 <div id='id'>{state.firstName} {state.lastName}</div>
 `),
-`h('div', { id: 'id' }, (state.firstName) + ' ' + (state.lastName))
+`h('div', { 'id': 'id' }, (state.firstName) + ' ' + (state.lastName))
 `)
 
 assert.strictEqual(hv(`
@@ -70,7 +70,7 @@ assert.strictEqual(hv(`
 </div>
 `),
 `h('div', null, [
-  h('a', { href: 'http://www.google.co.uk?q=' + (state.query) }),
+  h('a', { 'href': 'http://www.google.co.uk?q=' + (state.query) }),
   'My name is ' + (state.name) + ' my age is ' + (state.age) + ' and I live at ' + (state.address)
 ])
 `)

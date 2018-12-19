@@ -12,7 +12,7 @@ assert.strictEqual(hv(`
   if (state.bar === 1) {
     return h('span', null, 'Show Me!')
   }
-}).call(this))
+}.call(this)))
 `)
 
 assert.strictEqual(hv(`
@@ -38,7 +38,7 @@ assert.strictEqual(hv(`
   } else {
     return h('span', null, 'even')
   }
-}).call(this))
+}.call(this)))
 `)
 
 assert.strictEqual(hv(`
@@ -56,7 +56,7 @@ assert.strictEqual(hv(`
   } else if (state.bar === 2) {
     return h('span', null, '2')
   }
-}).call(this))
+}.call(this)))
 `)
 
 assert.strictEqual(hv(`
@@ -78,7 +78,7 @@ assert.strictEqual(hv(`
   } else {
     return h('span', null, "bar is neither 1 or 2, it's " + (state.bar) + '!')
   }
-}).call(this))
+}.call(this)))
 `)
 
 assert.strictEqual(hv(`
@@ -109,7 +109,7 @@ assert.strictEqual(hv(`
         } else {
           return h('span', null, 'bar2')
         }
-      }).call(this)
+      }.call(this))
     ]
   } else if (state.foo === 2) {
     return h('span', null, 'foo2')
@@ -118,5 +118,5 @@ assert.strictEqual(hv(`
   } else {
     return 'Default'
   }
-}).call(this))
+}.call(this)))
 `)

@@ -1,4 +1,4 @@
-const standardize = require('standard-format')
+const standard = require('standard')
 const htmlparser = require('htmlparser2')
 const delim = ['{', '}']
 const startDelim = delim[0]
@@ -183,16 +183,6 @@ class Node {
 }
 
 class Root extends Node {
-  get isSingleFunction () {
-    const children = this.children
-    if (children.length === 1) {
-      const onlyChild = children[0]
-      if (onlyChild.name === 'function') {
-        return true
-      }
-    }
-  }
-
   toString () {
     return this.children.map(c => c.toString()).join('\n').trim()
   }
@@ -309,7 +299,9 @@ module.exports = function (tmpl, mode = 'raw', name = 'view', args = 'props stat
       }
     }
 
-    return standardize.transform(result)
+    const lintResult = standard.lintTextSync(result, { fix: true })
+
+    return lintResult.results[0].output
   } catch (err) {
     throw new Error(`Error ${err.message}\n${result}\nraw:\n${js}`)
   }
