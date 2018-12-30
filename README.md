@@ -1,6 +1,6 @@
 # hyperviews
 
-`hyperviews` is a template language that transforms to hyperscript `h(tagName, attrs, children)`.
+`hyperviews` is a template language that transforms to hyperscript.
 
 Use it as a build tool with any `h(tag, props, children)` compliant framework e.g. React, preact or hyperapp.
 
